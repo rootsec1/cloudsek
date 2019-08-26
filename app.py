@@ -81,14 +81,7 @@ def control():
     download_id = request.args.get('id')
     action = str(request.args.get('action')).lower()    #pause/resume/stop
     if download_id in download_processes:
-        if action=='pause':
-            pid = download_processes[download_id].pid;
-            download_processes[download_id].suspend()
-            return { 'message': 'Pausing download' }
-        elif action=='resume':
-            download_processes[download_id].resume()
-            return { 'message': 'Resuming download' }
-        elif action=='stop':
+        if action=='stop':
             download_processes[download_id].terminate()
             del download_processes[download_id]
             return { 'message': 'Stopped download' }
