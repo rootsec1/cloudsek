@@ -1,4 +1,18 @@
 # cloudsek
+
+## Endpoints
+- HOSTNAME: https://pure-river-16928.herokuapp.com
+- Download file via URL: POST /download?url=<INPUT>
+- Get Status of download: GET /status?id=<INPUT>
+- Control download: POST /control?id=<INPUT>
+- Upload file: POST /upload (form-data upload with key 'file')
+- Download file: GET /file?id=<INPUT>
+
+## Deployment
+- Flask for building the Application Server
+- Used Gunicorn as the Web Server (Defaulting to 4 process workers, can be increased for higher workloads thus enabling more download workers independently)
+- Heroku as the deployment platform
+
 ## Design
 I am using Firebase RealTime DB as I feel it best suits the needs. (Persistence + RealTime)
 
