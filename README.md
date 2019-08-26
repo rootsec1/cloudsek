@@ -34,3 +34,14 @@ Therefore every file upload/download instance has a separate UUID. In simple lan
 2. Estimated time of file download completion
 3. Frontend to leverage the built APIs
 
+## Screenshots (Used Postman for MANUAL testing)
+![https://raw.githubusercontent.com/abhishekwl/cloudsek/master/screenshots/ss1.png](https://raw.githubusercontent.com/abhishekwl/cloudsek/master/screenshots/ss1.png)
+
+
+![https://raw.githubusercontent.com/abhishekwl/cloudsek/master/screenshots/ss2.png](https://raw.githubusercontent.com/abhishekwl/cloudsek/master/screenshots/ss2.png)
+
+
+![https://raw.githubusercontent.com/abhishekwl/cloudsek/master/screenshots/ss3.png](https://raw.githubusercontent.com/abhishekwl/cloudsek/master/screenshots/ss3.png)
+
+
+![https://raw.githubusercontent.com/abhishekwl/cloudsek/master/screenshots/ss4.png](https://raw.githubusercontent.com/abhishekwl/cloudsek/master/screenshots/ss4.png)
