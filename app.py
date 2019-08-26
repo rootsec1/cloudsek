@@ -1,8 +1,9 @@
 from flask import Flask, jsonify, request
 from multiprocessing import Process, Pool
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 import pyrebase
 import requests
-import time
 import uuid
 
 firebaseConfig = {
@@ -32,6 +33,12 @@ def download_file_from_url(url, id):
                         db.child(id).update({ 'done': dl })
 
 app = Flask(__name__)
+limiter = Limiter(
+    app=app,
+    key_func=get_remote_address,
+    default_limits=["10 per minute"],
+)
+
 @app.route('/download')
 def download():
     remote_url = request.args.get('url')
