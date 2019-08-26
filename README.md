@@ -17,6 +17,8 @@ Example of <Key:Value> (UUID: Another JSON)
 }
 ```
 
+Writing the current progress of download to DB happens very frequently and hence there is the overhead of expensive calls to DB. Since I am not currently using an async approach, this would have added an overhead to the download time. Every time a chunk from the remote file was written to our local disk, we had to wait for the corresponding progress updation DB call to happen which is not a feasible solution. Therefore the script I've written will only write to the DB for every 10% of the file downloaded.
+
 Therefore every file upload/download instance has a separate UUID. In simple language, multiple download or upload instances of even the same file will leverage different UUIDs and therefore file to DB mapping is consistent.
 
 ## Working
