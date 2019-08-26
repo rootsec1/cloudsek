@@ -20,26 +20,26 @@ firebaseConfig = {
     "appId": "1:968338824712:web:2e7677773b7474a0"
 }
 firebase = pyrebase.initialize_app(firebaseConfig)
-db = firebase.database()
+db = firebase.database()    # Initializing Firebase Realtime Database Instance
 
-download_processes = dict()
-CHUNK_SIZE = 8192
+download_processes = dict() # A global dictionary of processes with a ID to Process object mapping
+CHUNK_SIZE = 8192   #Can be modified to achieve various file writing speeds
 PORT = os.getenv('PORT') if os.getenv('PORT')!=None else 5000
 
 def download_file_from_url(url, id):
     local_filename = url.split('/')[-1]
     with requests.get(url, stream=True) as r:
-        size = int(r.headers.get('content-length'))
-        db.child(id).set({ 'name': local_filename, 'size': size, 'done': 0 })
+        size = int(r.headers.get('content-length')) # Get total size of remote file
+        db.child(id).set({ 'name': local_filename, 'size': size, 'done': 0 })   # Setting the initial data for that file on the DB
         if r.status_code==200:
             with open(local_filename, 'wb') as f:
-                dl=0
-                start_time = int(time.time())
+                dl=0    # Variable to track current download progress
+                start_time = int(time.time())   # To track ETA
                 for chunk in r.iter_content(chunk_size=CHUNK_SIZE):
                     end_time = int(time.time()) - start_time
                     f.write(chunk)
                     dl+=len(chunk)
-                    if (dl*100/size)%10==0:
+                    if (dl*100/size)%10==0: # Checking for 10% progress of download
                         db.child(id).update({ 'done': dl })
                     start_time = end_time
     del download_processes[id]
@@ -56,8 +56,8 @@ limiter = Limiter(
 def download():
     remote_url = request.args.get('url')
     download_id = str(uuid.uuid4()).replace('-','')
-    proc = Process(target=download_file_from_url, args=(remote_url, download_id))
-    download_processes[download_id] = proc
+    proc = Process(target=download_file_from_url, args=(remote_url, download_id))   # Creating a new process for the download
+    download_processes[download_id] = proc  # Adding process to global hashtable
     proc.start()
     return { 'id': download_id }
 
@@ -94,7 +94,7 @@ def upload():
     if file:
         filename = secure_filename(file.filename)
         file.save(filename)
-        download_url = 'http://'+socket.gethostbyname(socket.gethostname())+':'+str(PORT)+'/'+filename
+        download_url = 'http://'+socket.gethostbyname(socket.gethostname())+':'+str(PORT)+'/'+filename  # http://localhost:5000/challenge.pdf
         download_id = str(uuid.uuid4()).replace('-','')
         db.child(download_id).set({ 'name': filename, 'size': os.path.getsize(filename), 'done': os.path.getsize(filename), 'status': 'completed', 'remaining': 0 })
         return { 'id':  download_id }
